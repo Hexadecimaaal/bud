@@ -102,7 +102,7 @@ let
 
     FLAKEROOT="${flakeRoot}" # writable
     HOST="${host}"
-    USER="$(logname)"
+    # USER="$(logname)"
     ARCH="${arch}"
 
     # mocks: for testing onlye
