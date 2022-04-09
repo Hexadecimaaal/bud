@@ -5,21 +5,19 @@ if [[ "$1" == "switch" ]]; then
 fi
 
 portable=
-hostattr="$FLAKEROOT#homeConfigurations.\"$USER@$HOST\".activationPackage"
-portableattr="$FLAKEROOT#homeConfigurationsPortable.$ARCH.\"$USER\".activationPackage"
 
 if [[ "$1" == *"@"* ]]; then
-    USER="$(cut -d '@' -f 1 <<<"$1")"
+    HMUSER="$(cut -d '@' -f 1 <<<"$1")"
     HOST="$(cut -d '@' -f 2 <<<"$1")"
 
     # only user provided, intend to deploy the portable version
 elif [[ ! -z "$1" ]] && [[ -z "$2" ]]; then
     portable=y
-    USER="${1}"
+    HMUSER="${1}"
 
     # nothing or both provided
 else
-    USER="${1:-$USER}"
+    HMUSER="${1:-$USER}"
     HOST="${2:-$HOST}"
     HOST="$(
         IFS='.'
@@ -29,6 +27,9 @@ else
         echo \${host:: -1}
     )"
 fi
+
+hostattr="$FLAKEROOT#homeConfigurations.\"$HMUSER@$HOST\".activationPackage"
+portableattr="$FLAKEROOT#homeConfigurationsPortable.$ARCH.\"$HMUSER\".activationPackage"
 
 if [[ "$portable" == "y" ]]; then
     attr="$portableattr"
